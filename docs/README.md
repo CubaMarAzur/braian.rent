@@ -43,14 +43,13 @@ Uregulowanie rynku najmu w Polsce poprzez:
 
 ## Struktura repo
 
-\`\`\`bash
+```bash
 braian.rent/
-│
 ├── README.md                  # Ogólny opis projektu (biznes + tech)
 ├── .gitignore
 ├── .env.example               # Przykładowy plik zmiennych środowiskowych
 │
-├── docs/                   Dokumentacja produktu
+├── docs/                      # Dokumentacja produkt
 │   ├── PRD_Braian.md          # Product Requirements Document
 │   ├── AC_Braian.md           # Acceptance Criteria (user stories, GWT)
 │   ├── roadmap.md             # Roadmapa rozwoju (MVP → v1.1 → v1.3)
@@ -58,7 +57,7 @@ braian.rent/
 │   ├── ai_features.md         # Plan funkcji AI (chatbot, OCR, scoring)
 │   ├── data_model.md          # Model danych (Prisma/SQL)
 │   ├── infra.md               # Architektura chmurowa (GCP, Terraform)
-│   └── tests.md               # Plan testów (unit, e2e, API)
+│  └── tests.md               # Plan testów (unit, e2e, API)
 │
 ├── apps/                      # Frontend + backend jako monorepo (Next.js)
 │   ├── web/                   # Frontend PWA (Next.js, App Router)
@@ -66,18 +65,16 @@ braian.rent/
 │
 ├── jobs/                      # Cloud Run Jobs do OCR, AI, maili
 │   ├── generate_description/
-│   └── process_audit/
+│  └── process_audit/
 │
 ├── terraform/                 # IaC: infrastruktura GCP
 │   ├── main.tf
 │   ├── outputs.tf
-│   └── variables.tf
+│  └── variables.tf
 │
 ├── .github/                   # GitHub Actions
 │   └── workflows/
 │       └── deploy.yml
 │
 └── public/                    # Publiczne zasoby, np. favicon, ogłoszenia
-\`\`\`
-EOF
-
+```
