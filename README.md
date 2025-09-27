@@ -50,7 +50,7 @@ braian.rent/
 ├── .gitignore
 ├── .env.example               # Przykładowy plik zmiennych środowiskowych
 │
-├── docs/                  📚 Dokumentacja produktu
+├── docs/                   Dokumentacja produktu
 │   ├── PRD_Braian.md          # Product Requirements Document
 │   ├── AC_Braian.md           # Acceptance Criteria (user stories, GWT)
 │   ├── roadmap.md             # Roadmapa rozwoju (MVP → v1.1 → v1.3)
