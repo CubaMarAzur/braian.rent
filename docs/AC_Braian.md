@@ -1,111 +1,68 @@
-# Acceptance Criteria – Braian MVP Slim
+# Kryteria Akceptacji (AC) dla Braian.rent – MVP Slim
+# Wersja 2.1 (Udoskonalona)
 
-## 1. Rejestracja i profil najemcy
-
-### 1.1 Rejestracja
-- Najemca może zarejestrować się przez e-mail, Google lub Facebook.
-- Po rejestracji domyślnie przypisywana jest rola "TENANT".
-- Nie jest wymagane zatwierdzanie profilu przez administratora.
-
-### 1.2 Uzupełnianie profilu
-- Profil musi zawierać: imię, wiek, zdjęcie, social media (np. LinkedIn), źródło dochodu.
-- Po uzupełnieniu danych najemca jest widoczny w systemie.
-- Profil najemcy jest publiczny i może być przeglądany przez właścicieli.
+Poniższy dokument definiuje kryteria akceptacji dla kluczowych funkcjonalności MVP. Scenariusze zostały zoptymalizowane pod kątem przejrzystości i testowalności.
 
 ---
 
-## 2. Dodawanie nieruchomości
+## 1. Onboarding i zarządzanie Najemcą
 
-### 2.1 Formularz nieruchomości
-- Właściciel może dodać nieruchomość przez prosty formularz z podstawowymi danymi (adres, metraż, pokoje).
-- Rozszerzone dane (zdjęcia, media, liczniki, opis) mogą być dodane później.
+### Scenariusz 1.1: Właściciel zaprasza nowego Najemcę przez e-mail
+* **Given** jestem zalogowany jako Właściciel i zarządzam nieruchomością bez przypisanego najemcy.
+* **When** w panelu nieruchomości wybiorę opcję "Zaproś najemcę", wpiszę adres e-mail osoby, która nie ma konta w systemie, i wyślę zaproszenie.
+* **Then** system wyśle e-mail z unikalnym linkiem do rejestracji na podany adres.
+* **And** po tym, jak zaproszona osoba pomyślnie się zarejestruje, zostanie automatycznie powiązana z moją nieruchomością, a ja zobaczę jej dane w panelu.
 
-### 2.2 Publikacja ogłoszenia
-- Po dodaniu nieruchomości, właściciel może wygenerować opis przez AI.
-- Po zatwierdzeniu opisu przez właściciela i moderację systemu, ogłoszenie trafia do marketplace.
-
----
-
-## 3. Połączenie najemca – właściciel
-
-### 3.1 Aplikowanie do ogłoszenia
-- Najemca może filtrować oferty i kliknąć "Zgłoś się", aby wyrazić zainteresowanie.
-- Tylko zweryfikowany profil może aplikować.
-
-### 3.2 Decyzja właściciela
-- Właściciel widzi profil najemcy i może zaakceptować zgłoszenie.
-- Po akceptacji rozpoczyna się komunikacja przez chat.
+### Scenariusz 1.2: Właściciel przypisuje istniejącego Najemcę przez aplikację
+* **Given** jestem zalogowany jako Właściciel, a Najemca, którego chcę dodać, ma już konto w systemie.
+* **When** w panelu nieruchomości wybiorę opcję "Dodaj istniejącego najemcę", wyszukam go po adresie e-mail i wyślę zaproszenie.
+* **Then** najemca otrzyma w aplikacji powiadomienie o zaproszeniu do umowy.
+* **And** gdy najemca zaakceptuje zaproszenie, zostanie powiązany z moją nieruchomością, co będzie widoczne w moim panelu.
 
 ---
 
-## 4. Komunikacja i chat
+## 2. Zarządzanie Płatnościami
 
-### 4.1 System wiadomości
-- Komunikacja między najemcą a właścicielem odbywa się wyłącznie przez wbudowany chat.
-- Chat działa w czasie rzeczywistym (Firestore).
-- Braian odpowiada na pytania i moderuje zgłoszenia (LLM).
+### Scenariusz 2.1: Właściciel tworzy nową należność
+* **Given** jestem zalogowany jako Właściciel i zarządzam nieruchomością z aktywnym najemcą.
+* **When** w sekcji płatności kliknę "Dodaj należność", wybiorę jej typ (np. "Czynsz najmu"), wpiszę kwotę oraz termin płatności.
+* **Then** nowa należność ze statusem "Niezapłacona" pojawi się na liście płatności u mnie oraz w panelu najemcy.
 
-### 4.2 Zgłaszanie usterek
-- Najemca zgłasza awarie przez chat.
-- Bot wymusza podanie szczegółów: opis, zdjęcie, lokalizacja.
+### Scenariusz 2.2: Właściciel oznacza płatność jako w pełni opłaconą
+* **Given** na liście płatności istnieje należność ze statusem "Niezapłacona".
+* **When** wybiorę dla niej opcję "Oznacz jako zapłacone".
+* **Then** status tej należności zmieni się na "Zapłacona", a data operacji zostanie zapisana.
 
----
-
-## 5. Umowy i dokumenty
-
-### 5.1 Drafty umów
-- Właściciel ma dostęp do gotowych szablonów umów.
-- Drafty mogą być uzupełniane ręcznie w aplikacji (bez podpisu i OCR).
-
-### 5.2 Widoczność dla najemcy
-- Najemca widzi propozycję umowy w panelu i może ją pobrać.
-
-### 5.3 Checklisty obowiązków
-- Po akceptacji umowy, najemca widzi checklistę z obowiązkami (np. zgłoszenie do US, OC).
+### Scenariusz 2.3: Właściciel rejestruje niepełną wpłatę
+* **Given** na liście płatności istnieje należność o wartości 2000 zł.
+* **When** wybiorę dla niej opcję "Zarejestruj niepełną wpłatę" i wpiszę kwotę 1500 zł.
+* **Then** status należności zmieni się na "Niepełna wpłata", a w szczegółach będzie widoczne, że wpłacono 1500 zł i pozostało 500 zł do zapłaty.
 
 ---
 
-## 6. Liczniki i media
+## 3. Dashboard Właściciela i Zarządzanie Nieruchomością
 
-### 6.1 Przypisanie liczników
-- Liczniki są przypisane do nieruchomoścy.
+### Scenariusz 3.1: Widok dashboardu z danymi najemcy i płatności
+* **Given** jestem zalogowany jako Właściciel.
+* **When** na dashboardzie wybiorę nieruchomość, która jest obecnie wynajmowana.
+* **Then** w panelu nieruchomości zobaczę sekcję z danymi najemcy: jego zdjęcie profilowe, wiek, numer telefonu i adres e-mail.
+* **And** zobaczę ikonę umożliwiającą rozpoczęcie rozmowy na czacie.
+* **And** zobaczę również status bieżącej płatności dla tej nieruchomości (np. "Oczekuje na wpłatę do 10.10.2025").
 
-### 6.2 Wprowadzanie stanów
-- Najemca ręcznie wprowadza stan liczników.
-- Właściciel może zatwierdzić lub skorygować dane.
+### Scenariusz 3.2: Statusy dokumentów na dashboardzie (czerwony/zielony)
+* **Given** jestem na dashboardzie wynajmowanej nieruchomości.
+* **And** do nieruchomości nie załączono jeszcze pliku z ubezpieczeniem, ale załączono plik z umową.
+* **When** spojrzę na sekcję "Dokumenty".
+* **Then** pozycja "Ubezpieczenie" będzie oznaczona kolorem **czerwonym**.
+* **And** pozycja "Umowa" będzie oznaczona kolorem **zielonym**.
 
-### 6.3 Brak przeliczania
-- W MVP brak funkcji przeliczania opłat na podstawie zużycia.
+### Scenariusz 3.3: Dodawanie dokumentu i aktualizacja statusu
+* **Given** jestem na dashboardzie, a status dokumentu "Ubezpieczenie" jest czerwony.
+* **When** kliknę w pozycję "Ubezpieczenie", prześlę plik z polisą i wpiszę jej datę ważności.
+* **Then** po powrocie na dashboard, status dokumentu "Ubezpieczenie" zmieni się na **zielony**.
 
----
-
-## 7. Audyty
-
-### 7.1 Ustawienie harmonogramu
-- Właściciel może ustawić audyt co 2, 3, 4 lub 6 miesięcy.
-
-### 7.2 Wypełnienie audytu przez najemcę
-- Najemca otrzymuje checklistę, robi zdjęcia i dodaje opisy.
-- Pliki są przesyłane do GCS.
-
----
-
-## 8. Historia płatności
-
-### 8.1 Rejestracja płatności
-- Właściciel ręcznie oznacza płatności jako „opłacone”.
-
-### 8.2 Widok dla najemcy
-- Najemca widzi historię opłat.
-- Brak funkcji "Zapłać" w MVP.
-
----
-
-## 9. Uprawnienia i konta
-
-### 9.1 Powiązanie kont
-- Każda nieruchomość może mieć jednego właściciela.
-- Konto najemcy jest powiązane z konkretną nieruchomością.
-- W przyszłości możliwe dodanie współwłaściciela lub pełnomocnika.
-
+### Scenariusz 3.4: Przełączanie ról w aplikacji
+* **Given** jestem zalogowany jako użytkownik, który jest jednocześnie Właścicielem i Najemcą.
+* **When** w menu profilu wybiorę opcję "Przełącz na profil Najemcy".
+* **Then** interfejs aplikacji zmieni się na widok Najemcy, prezentując dane związane z nieruchomością, którą wynajmuję.
 
