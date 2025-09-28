@@ -57,7 +57,7 @@ braian.rent/
 │   ├── ai_features.md         # Plan funkcji AI (chatbot, OCR, scoring)
 │   ├── data_model.md          # Model danych (Prisma/SQL)
 │   ├── infra.md               # Architektura chmurowa (GCP, Terraform)
-│  └── tests.md               # Plan testów (unit, e2e, API)
+│   └── tests.md               # Plan testów (unit, e2e, API)
 │
 ├── apps/                      # Frontend + backend jako monorepo (Next.js)
 │   ├── web/                   # Frontend PWA (Next.js, App Router)
@@ -65,12 +65,12 @@ braian.rent/
 │
 ├── jobs/                      # Cloud Run Jobs do OCR, AI, maili
 │   ├── generate_description/
-│  └── process_audit/
+│   └── process_audit/
 │
 ├── terraform/                 # IaC: infrastruktura GCP
 │   ├── main.tf
 │   ├── outputs.tf
-│  └── variables.tf
+│   └── variables.tf
 │
 ├── .github/                   # GitHub Actions
 │   └── workflows/
