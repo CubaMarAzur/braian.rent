@@ -1,5 +1,5 @@
 # Runbook Operacyjny Aplikacji Braian.rent
-# Wersja 1.1 (Udoskonalona)
+# Wersja 1.1
 
 ## 1. Wprowadzenie
 
