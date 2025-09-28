@@ -55,18 +55,19 @@ C4Container
   Rel(owner, frontend, "Używa", "HTTPS")
   Rel(tenant, frontend, "Używa", "HTTPS")
 
-  Rel(frontend, api, "Wysyła żądania do", "HTTPS/REST")
-  Rel(api, postgres, "Odczytuje/Zapisuje dane", "TCP")
-  Rel(api, firestore, "Odczytuje/Zapisuje metadane", "gRPC")
-  Rel(api, storage, "Generuje Signed URLs dla", "HTTPS")
-  Rel(api, queue, "Publikuje zadania w")
+  Rel(frontend, api, "API Calls", "HTTPS/REST")
+  Rel(api, postgres, "Odczyt/Zapis", "TCP")
+  Rel(api, firestore, "Odczyt/Zapis metadanych", "gRPC")
+  Rel(api, storage, "Dostęp do plików", "HTTPS")
+  Rel(api, queue, "Publikuje zadanie")
 
   Rel(frontend, firestore, "Łączy się z dla czatu", "WebSocket")
   Rel(frontend, storage, "Wysyła/Pobiera pliki do/z", "HTTPS")
   
-  Rel(jobs, queue, "Pobiera zadania z")
-  Rel(jobs, postgres, "Zapisuje wyniki do")
-  Rel(jobs, storage, "Przetwarza pliki z")
+  Rel(jobs, queue, "Pobiera zadania")
+  Rel(jobs, postgres, "Zapisuje wynik")
+  Rel(jobs, storage, "Przetwarza plik")
+
 ```
 
 ## 2\. Rejestr Decyzji Architektonicznych (ADR)
