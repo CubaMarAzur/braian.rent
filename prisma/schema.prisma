@@ -1,0 +1,120 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  OWNER
+  TENANT
+}
+
+enum PaymentStatus {
+  UNPAID
+  PARTIALLY_PAID
+  PAID
+}
+
+enum PaymentType {
+  RENT
+  ADMIN_FEE
+  UTILITIES
+  DEPOSIT
+  OTHER
+}
+
+enum DocumentType {
+  LEASE_AGREEMENT
+  INSURANCE
+  HANDOVER_PROTOCOL
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  role      Role     @default(TENANT)
+
+  ownedProperties     Property[]   @relation("OwnerProperties")
+  leasesAsTenant      Lease[]      @relation("TenantLeases")
+  chatThreadsAsOwner  ChatThread[] @relation("OwnerChatThreads")
+  chatThreadsAsTenant ChatThread[] @relation("TenantChatThreads")
+}
+
+model Property {
+  id         String   @id @default(cuid())
+  address    String
+  city       String
+  postalCode String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  owner       User       @relation("OwnerProperties", fields: [ownerId], references: [id])
+  ownerId     String
+  leases      Lease[]
+  documents   Document[]
+  chatThreads ChatThread[]
+}
+
+model Lease {
+  id         String   @id @default(cuid())
+  startDate  DateTime
+  endDate    DateTime
+  rentAmount Decimal
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  property   Property @relation(fields: [propertyId], references: [id])
+  propertyId String
+  tenant     User     @relation("TenantLeases", fields: [tenantId], references: [id])
+  tenantId   String
+  payments   Payment[]
+  documents  Document[]
+}
+
+model Payment {
+  id          String        @id @default(cuid())
+  amountDue   Decimal
+  amountPaid  Decimal?
+  dueDate     DateTime
+  status      PaymentStatus @default(UNPAID)
+  type        PaymentType   @default(RENT)
+  description String?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  lease   Lease  @relation(fields: [leaseId], references: [id])
+  leaseId String
+}
+
+model Document {
+  id         String       @id @default(cuid())
+  fileUrl    String
+  type       DocumentType
+  expiresAt  DateTime?
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+
+  property   Property @relation(fields: [propertyId], references: [id])
+  propertyId String
+  lease      Lease?   @relation(fields: [leaseId], references: [id])
+  leaseId    String?
+}
+
+model ChatThread {
+  id                String   @id @default(cuid())
+  firestoreThreadId String   @unique
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  property   Property @relation(fields: [propertyId], references: [id])
+  propertyId String
+  owner      User     @relation("OwnerChatThreads", fields: [ownerId], references: [id])
+  ownerId    String
+  tenant     User     @relation("TenantChatThreads", fields: [tenantId], references: [id])
+  tenantId   String
+}

@@ -1,4 +1,5 @@
 # Notatki UX i Ścieżki Użytkownika (User Flows)
+
 # Wersja 1.0
 
 Ten dokument opisuje kluczowe założenia User Experience oraz główne podróże użytkownika (User Journeys) w aplikacji Braian.rent w wersji MVP Slim.
@@ -7,23 +8,23 @@ Ten dokument opisuje kluczowe założenia User Experience oraz główne podróż
 
 Aby projektować z myślą o użytkowniku, posługujemy się dwiema uproszczonymi personami:
 
-* **Właściciel "Marek":** Mężczyzna w wieku 35-50 lat, posiada 1-3 mieszkania na wynajem, które traktuje jako inwestycję. Jest obeznany z technologią, ale ceni swój czas. Jego głównym celem jest porządek w dokumentach, terminowe płatności i bezproblemowa komunikacja z najemcami. Chce mieć poczucie kontroli i bezpieczeństwa.
+- **Właściciel "Marek":** Mężczyzna w wieku 35-50 lat, posiada 1-3 mieszkania na wynajem, które traktuje jako inwestycję. Jest obeznany z technologią, ale ceni swój czas. Jego głównym celem jest porządek w dokumentach, terminowe płatności i bezproblemowa komunikacja z najemcami. Chce mieć poczucie kontroli i bezpieczeństwa.
 
-* **Najemca "Anna":** Kobieta w wieku 25-35 lat, pracuje jako specjalistka w dużej firmie. Oczekuje, że procesy związane z wynajmem będą cyfrowe, proste i transparentne. Chce mieć łatwy dostęp do swojej umowy, historii płatności i szybki kanał komunikacji w razie awarii.
+- **Najemca "Anna":** Kobieta w wieku 25-35 lat, pracuje jako specjalistka w dużej firmie. Oczekuje, że procesy związane z wynajmem będą cyfrowe, proste i transparentne. Chce mieć łatwy dostęp do swojej umowy, historii płatności i szybki kanał komunikacji w razie awarii.
 
 ## 2. Kluczowe Założenia i Standardy UX
 
 Poniższe zasady stanowią fundament doświadczenia użytkownika w aplikacji:
 
-* **Szybkość i Responsywność:** Interfejs musi być szybki. Podczas ładowania danych dynamicznych (np. na dashboardzie) stosujemy **szkielety interfejsu (Skeleton Loaders)**, aby unikać "skakania" treści i dawać poczucie natychmiastowego działania.
+- **Szybkość i Responsywność:** Interfejs musi być szybki. Podczas ładowania danych dynamicznych (np. na dashboardzie) stosujemy **szkielety interfejsu (Skeleton Loaders)**, aby unikać "skakania" treści i dawać poczucie natychmiastowego działania.
 
-* **Zapamiętywanie Kontekstu:** Aplikacja powinna minimalizować liczbę kliknięć. Kluczowe wybory, takie jak ostatnio przeglądana nieruchomość na dashboardzie Właściciela, są **zapamiętywane (State Persistence)** między sesjami.
+- **Zapamiętywanie Kontekstu:** Aplikacja powinna minimalizować liczbę kliknięć. Kluczowe wybory, takie jak ostatnio przeglądana nieruchomość na dashboardzie Właściciela, są **zapamiętywane (State Persistence)** między sesjami.
 
-* **Ciągła Informacja Zwrotna:** Każda ważna akcja użytkownika (np. zmiana roli, wysłanie zaproszenia) jest potwierdzana subtelnym, nietrwałym komunikatem (tzw. **"Toast Notification"**), np. "Pomyślnie przełączono profil".
+- **Ciągła Informacja Zwrotna:** Każda ważna akcja użytkownika (np. zmiana roli, wysłanie zaproszenia) jest potwierdzana subtelnym, nietrwałym komunikatem (tzw. **"Toast Notification"**), np. "Pomyślnie przełączono profil".
 
-* **Powiadomienia "w Kontekście":** W MVP powiadomienia są subtelne. Nowa wiadomość na czacie jest sygnalizowana przez **wskaźnik (badge)** na ikonie wiadomości, który pojawia się w czasie rzeczywistym (dzięki **Firestore listener**). Dodatkowo, jeśli użytkownik jest w innej karcie przeglądarki, **favicona** aplikacji również pokazuje wskaźnik.
+- **Powiadomienia "w Kontekście":** W MVP powiadomienia są subtelne. Nowa wiadomość na czacie jest sygnalizowana przez **wskaźnik (badge)** na ikonie wiadomości, który pojawia się w czasie rzeczywistym (dzięki **Firestore listener**). Dodatkowo, jeśli użytkownik jest w innej karcie przeglądarki, **favicona** aplikacji również pokazuje wskaźnik.
 
-* **Dostępność (Accessibility):** Wszystkie kluczowe elementy nawigacyjne (menu, przełączniki) muszą być w pełni obsługiwane za pomocą klawiatury.
+- **Dostępność (Accessibility):** Wszystkie kluczowe elementy nawigacyjne (menu, przełączniki) muszą być w pełni obsługiwane za pomocą klawiatury.
 
 ## 3. Główne Ścieżki Użytkownika (User Flows)
 

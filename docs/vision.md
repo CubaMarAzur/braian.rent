@@ -1,4 +1,5 @@
 # Wizja i Misja Projektu Braian.rent
+
 # Wersja 1.1 (Udoskonalona)
 
 ## 1. Problem: Wynajem to "drugi etat"
@@ -21,16 +22,16 @@ Eliminujemy pośredników i bariery technologiczne, dając kontrolę z powrotem 
 
 Każda funkcja i decyzja w Braian.rent jest mierzona względem tych zasad:
 
-* **Automatyzuj, nie komplikuj:** Nasze narzędzia mają redukować pracę, a nie dodawać nowe obowiązki. Każda funkcja musi być intuicyjna.
-* **Buduj zaufanie przez transparentność:** Obie strony umowy muszą mieć dostęp do jasnych, zrozumiałych informacji. System ma być bezstronnym źródłem prawdy.
-* **Empatia dla obu stron:** Projektujemy z myślą o realnych problemach zarówno Właściciela "Marka", jak i Najemcy "Anny". Ich spokój jest naszą miarą sukcesu.
-* **Od procedury do produktu:** Naszą unikalną wartością jest przekształcanie realnego, sprawdzonego know-how w inteligentne, zautomatyzowane procesy.
+- **Automatyzuj, nie komplikuj:** Nasze narzędzia mają redukować pracę, a nie dodawać nowe obowiązki. Każda funkcja musi być intuicyjna.
+- **Buduj zaufanie przez transparentność:** Obie strony umowy muszą mieć dostęp do jasnych, zrozumiałych informacji. System ma być bezstronnym źródłem prawdy.
+- **Empatia dla obu stron:** Projektujemy z myślą o realnych problemach zarówno Właściciela "Marka", jak i Najemcy "Anny". Ich spokój jest naszą miarą sukcesu.
+- **Od procedury do produktu:** Naszą unikalną wartością jest przekształcanie realnego, sprawdzonego know-how w inteligentne, zautomatyzowane procesy.
 
 ## 5. Pozycjonowanie Produktu
 
-* **DLA:** Samodzielnie zarządzających właścicieli 1-3 nieruchomości w Polsce.
-* **KTÓRZY:** Chcą odzyskać kontrolę, obniżyć koszty i spać spokojnie.
-* **BRAIAN.RENT JEST:** Inteligentnym asystentem do zarządzania najmem.
-* **KTÓRY:** Zmienia chaos w porządek, automatyzując zadania i prowadząc użytkownika "za rękę".
-* **W PRZECIWIEŃSTWIE DO:** Drogich agencji i skomplikowanego oprogramowania korporacyjnego.
-* **NASZ PRODUKT:** Demokratyzuje profesjonalne zarządzanie najmem, czyniąc je dostępnym, prostym i bezpiecznym dla każdego.
+- **DLA:** Samodzielnie zarządzających właścicieli 1-3 nieruchomości w Polsce.
+- **KTÓRZY:** Chcą odzyskać kontrolę, obniżyć koszty i spać spokojnie.
+- **BRAIAN.RENT JEST:** Inteligentnym asystentem do zarządzania najmem.
+- **KTÓRY:** Zmienia chaos w porządek, automatyzując zadania i prowadząc użytkownika "za rękę".
+- **W PRZECIWIEŃSTWIE DO:** Drogich agencji i skomplikowanego oprogramowania korporacyjnego.
+- **NASZ PRODUKT:** Demokratyzuje profesjonalne zarządzanie najmem, czyniąc je dostępnym, prostym i bezpiecznym dla każdego.

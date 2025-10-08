@@ -1,4 +1,5 @@
 # Model Danych - Braian.rent MVP Slim
+
 # Wersja 1.1 (Udoskonalona)
 
 Ten dokument definiuje schemat bazy danych PostgreSQL dla aplikacji Braian.rent, używając składni Prisma Schema Language (PSL).
@@ -64,7 +65,7 @@ model User {
   // Relacje
   ownedProperties Property[] @relation("OwnerProperties")
   leasesAsTenant  Lease[]    @relation("TenantLeases")
-  
+
   chatThreadsAsOwner  ChatThread[] @relation("OwnerChatThreads")
   chatThreadsAsTenant ChatThread[] @relation("TenantChatThreads")
 }
@@ -110,13 +111,13 @@ model Payment {
   amountDue Decimal
   amountPaid Decimal?
   dueDate   DateTime
-  
+
   status    PaymentStatus @default(UNPAID)
   type      PaymentType   @default(RENT) // POPRAWKA: Dodano typ płatności
-  
+
   // Opis jest teraz opcjonalny, jeśli typ "OTHER"
-  description String? 
-  
+  description String?
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -158,3 +159,4 @@ model ChatThread {
   tenant      User     @relation("TenantChatThreads", fields: [tenantId], references: [id])
   tenantId    String
 }
+```
