@@ -161,11 +161,7 @@ export function captureMessage(
 }
 
 // Performance monitoring helpers (simplified)
-export function startTransaction(
-  name: string,
-  _op = 'function',
-  _data?: Record<string, unknown>
-) {
+export function startTransaction(name: string) {
   // Sentry Next.js SDK handles transactions automatically
   console.log(`[Sentry] Starting transaction: ${name}`);
   return {

@@ -1,15 +1,7 @@
 import { NodeSDK } from '@opentelemetry/sdk-node';
 import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentations-node';
-import { PeriodicExportingMetricReader } from '@opentelemetry/sdk-metrics';
-import { PrometheusExporter } from '@opentelemetry/exporter-prometheus';
 import { config } from './config';
 import { appLogger } from './logger';
-
-// Prometheus exporter for metrics
-const prometheusExporter = new PrometheusExporter({
-  port: 9464,
-  endpoint: '/metrics',
-});
 
 // Create simplified OpenTelemetry SDK instance
 const sdk = new NodeSDK({

@@ -98,7 +98,10 @@ export const appLogger: Logger = {
   },
 };
 
-// Request logging helper
+/**
+ * Logs an incoming HTTP request with relevant metadata
+ * @param req - Request information including method, URL, headers, userAgent, and IP
+ */
 export const logRequest = (req: {
   method: string;
   url: string;

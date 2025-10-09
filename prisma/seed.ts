@@ -1,5 +1,6 @@
 // Importujemy klienta Prisma
 import { PrismaClient } from '@prisma/client';
+import bcrypt from 'bcryptjs';
 
 // Inicjalizujemy klienta Prisma
 const prisma = new PrismaClient();
@@ -20,9 +21,14 @@ async function main() {
 
   // 2. Tworzenie testowych użytkowników
   console.log('👤 Creating test users...');
+
+  // Hash test passwords
+  const hashedPassword = await bcrypt.hash('TestPassword123!', 10);
+
   const ownerMarek = await prisma.user.create({
     data: {
       email: 'marek.wlasciciel@example.com',
+      password: hashedPassword,
       role: 'OWNER',
       name: 'Marek Właściciel',
       phone: '+48 123 456 789',
@@ -32,6 +38,7 @@ async function main() {
   const tenantAnna = await prisma.user.create({
     data: {
       email: 'anna.najemca@example.com',
+      password: hashedPassword,
       role: 'TENANT',
       name: 'Anna Najemca',
       phone: '+48 987 654 321',

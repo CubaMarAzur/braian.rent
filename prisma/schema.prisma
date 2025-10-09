@@ -33,11 +33,12 @@ enum DocumentType {
 }
 
 model User {
-  id    String @id @default(uuid())
-  email String @unique
-  role  Role   @default(OWNER)
-  name  String
-  phone String
+  id       String  @id @default(uuid())
+  email    String  @unique
+  password String  // Hashed password
+  role     Role    @default(OWNER)
+  name     String
+  phone    String
 
   // Relacje do Property
   ownedProperties Property[] @relation("OwnerProperties")

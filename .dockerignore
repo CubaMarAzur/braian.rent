@@ -57,3 +57,30 @@ docker-compose*
 # Misc
 *.tgz
 *.tar.gz
+
+# Secrets and sensitive files
+*.pem
+*.key
+*.cert
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# CI/CD
+.github
+.gitlab-ci.yml
+.travis.yml
+.circleci
+
+# Monitoring (local only)
+.husky
+.prettierrc
+.prettierignore
+eslint.config.mjs
+
+# Prisma migrations (only schema needed)
+prisma/migrations/
+
+# TypeScript
+*.tsbuildinfo
