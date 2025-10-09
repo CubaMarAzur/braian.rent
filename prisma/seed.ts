@@ -24,6 +24,8 @@ async function main() {
     data: {
       email: 'marek.wlasciciel@example.com',
       role: 'OWNER',
+      name: 'Marek Właściciel',
+      phone: '+48 123 456 789',
     },
   });
 
@@ -31,6 +33,8 @@ async function main() {
     data: {
       email: 'anna.najemca@example.com',
       role: 'TENANT',
+      name: 'Anna Najemca',
+      phone: '+48 987 654 321',
     },
   });
   console.log(`👨‍💼 Created Owner 'Marek': ${ownerMarek.id}`);
@@ -53,6 +57,7 @@ async function main() {
   const lease = await prisma.lease.create({
     data: {
       propertyId: propertyPoznanska.id,
+      ownerId: ownerMarek.id,
       tenantId: tenantAnna.id,
       startDate: new Date('2024-01-01T12:00:00Z'),
       endDate: new Date('2025-12-31T12:00:00Z'),

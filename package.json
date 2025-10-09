@@ -6,17 +6,36 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "start:standalone": "node .next/standalone/server.js",
+    "start:prod": "NODE_ENV=production node .next/standalone/server.js",
     "lint": "eslint",
     "db:seed": "npx prisma db seed",
+    "db:migrate": "npx prisma migrate deploy",
+    "db:generate": "npx prisma generate",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "prepare": "husky"
+    "prepare": "husky",
+    "validate:env": "node -e \"require('./src/lib/env.ts')\"",
+    "docker:build": "docker build -t braian-rent .",
+    "docker:run": "docker run -p 3000:8080 --env-file .env braian-rent"
   },
   "dependencies": {
+    "@opentelemetry/api": "^1.9.0",
+    "@opentelemetry/auto-instrumentations-node": "^0.65.0",
+    "@opentelemetry/exporter-prometheus": "^0.206.0",
+    "@opentelemetry/instrumentation-express": "^0.55.0",
+    "@opentelemetry/instrumentation-http": "^0.206.0",
+    "@opentelemetry/sdk-node": "^0.206.0",
     "@prisma/client": "^6.17.0",
+    "@sentry/nextjs": "^10.18.0",
+    "autoprefixer": "^10.4.21",
     "next": "15.5.4",
+    "pino": "^10.0.0",
+    "postcss": "^8.5.6",
     "react": "19.1.0",
-    "react-dom": "19.1.0"
+    "react-dom": "19.1.0",
+    "winston": "^3.18.3",
+    "zod": "^4.1.12"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

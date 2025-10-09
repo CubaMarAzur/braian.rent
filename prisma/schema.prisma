@@ -33,16 +33,25 @@ enum DocumentType {
 }
 
 model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  role      Role     @default(TENANT)
+  id    String @id @default(uuid())
+  email String @unique
+  role  Role   @default(OWNER)
+  name  String
+  phone String
 
-  ownedProperties     Property[]   @relation("OwnerProperties")
-  leasesAsTenant      Lease[]      @relation("TenantLeases")
+  // Relacje do Property
+  ownedProperties Property[] @relation("OwnerProperties")
+
+  // Relacje do Lease
+  leasesAsOwner  Lease[] @relation("OwnerLeases")
+  leasesAsTenant Lease[] @relation("TenantLeases")
+
+  // Relacje do ChatThread
   chatThreadsAsOwner  ChatThread[] @relation("OwnerChatThreads")
   chatThreadsAsTenant ChatThread[] @relation("TenantChatThreads")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Property {
@@ -53,11 +62,18 @@ model Property {
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
-  owner       User       @relation("OwnerProperties", fields: [ownerId], references: [id])
-  ownerId     String
-  leases      Lease[]
-  documents   Document[]
-  chatThreads ChatThread[]
+  // Relacja do User (Owner)
+  owner   User   @relation("OwnerProperties", fields: [ownerId], references: [id])
+  ownerId String
+
+  // Relacje do Lease
+  leases Lease[] @relation("PropertyLeases")
+
+  // Relacje do Document
+  documents Document[] @relation("PropertyDocuments")
+
+  // Relacje do ChatThread
+  chatThreads ChatThread[] @relation("PropertyChatThreads")
 }
 
 model Lease {
@@ -68,12 +84,21 @@ model Lease {
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
-  property   Property @relation(fields: [propertyId], references: [id])
+  // Relacja do Property
+  property   Property @relation("PropertyLeases", fields: [propertyId], references: [id])
   propertyId String
-  tenant     User     @relation("TenantLeases", fields: [tenantId], references: [id])
-  tenantId   String
-  payments   Payment[]
-  documents  Document[]
+
+  // Relacje do User
+  owner    User   @relation("OwnerLeases", fields: [ownerId], references: [id])
+  ownerId  String
+  tenant   User   @relation("TenantLeases", fields: [tenantId], references: [id])
+  tenantId String
+
+  // Relacje do Payment
+  payments Payment[] @relation("LeasePayments")
+
+  // Relacje do Document
+  documents Document[] @relation("LeaseDocuments")
 }
 
 model Payment {
@@ -87,22 +112,26 @@ model Payment {
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
 
-  lease   Lease  @relation(fields: [leaseId], references: [id])
+  // Relacja do Lease
+  lease   Lease  @relation("LeasePayments", fields: [leaseId], references: [id])
   leaseId String
 }
 
 model Document {
-  id         String       @id @default(cuid())
-  fileUrl    String
-  type       DocumentType
-  expiresAt  DateTime?
-  createdAt  DateTime     @default(now())
-  updatedAt  DateTime     @updatedAt
+  id        String       @id @default(cuid())
+  fileUrl   String
+  type      DocumentType
+  expiresAt DateTime?
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
 
-  property   Property @relation(fields: [propertyId], references: [id])
+  // Relacja do Property
+  property   Property @relation("PropertyDocuments", fields: [propertyId], references: [id])
   propertyId String
-  lease      Lease?   @relation(fields: [leaseId], references: [id])
-  leaseId    String?
+
+  // Relacja do Lease (opcjonalna)
+  lease   Lease?  @relation("LeaseDocuments", fields: [leaseId], references: [id])
+  leaseId String?
 }
 
 model ChatThread {
@@ -111,10 +140,13 @@ model ChatThread {
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
 
-  property   Property @relation(fields: [propertyId], references: [id])
+  // Relacja do Property
+  property   Property @relation("PropertyChatThreads", fields: [propertyId], references: [id])
   propertyId String
-  owner      User     @relation("OwnerChatThreads", fields: [ownerId], references: [id])
-  ownerId    String
-  tenant     User     @relation("TenantChatThreads", fields: [tenantId], references: [id])
-  tenantId   String
+
+  // Relacje do User
+  owner    User   @relation("OwnerChatThreads", fields: [ownerId], references: [id])
+  ownerId  String
+  tenant   User   @relation("TenantChatThreads", fields: [tenantId], references: [id])
+  tenantId String
 }
