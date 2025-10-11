@@ -23,8 +23,9 @@ resource "google_cloud_run_v2_service" "main" {
     timeout = "${var.cloud_run_timeout}s"
 
     containers {
-      # Image will be updated by CI/CD
-      image = "${var.region}-docker.pkg.dev/${var.project_id}/${google_artifact_registry_repository.docker_repo.repository_id}/${var.app_name}:latest"
+      # Placeholder image for initial deployment
+      # CI/CD pipeline will update this to the actual application image
+      image = "us-docker.pkg.dev/cloudrun/container/hello"
 
       # Resources
       resources {
@@ -54,7 +55,9 @@ resource "google_cloud_run_v2_service" "main" {
 
       env {
         name  = "NEXTAUTH_URL"
-        value = "https://${google_cloud_run_v2_service.main.uri}"
+        # This will be updated after first deployment with actual URL
+        # For now, use a placeholder that will be overridden by CI/CD
+        value = "https://placeholder.run.app"
       }
 
       env {
@@ -128,36 +131,14 @@ resource "google_cloud_run_v2_service" "main" {
       }
     }
 
-    # Cloud SQL connection
-    containers {
-      name = "cloud-sql-proxy"
-      
-      # Note: This is an alternative approach using sidecar
-      # For direct connection, use the annotation below instead
-    }
   }
 
-  # Cloud SQL connections via Unix sockets
-  # This is the recommended approach
+  # Dependencies - ensure infrastructure is ready before deploying
   depends_on = [
     google_sql_database_instance.main,
-    google_project_service.required_apis
+    google_project_service.required_apis,
+    google_artifact_registry_repository.docker_repo
   ]
-}
-
-# Annotation for Cloud SQL connection (alternative to sidecar)
-resource "google_cloud_run_v2_service" "main_with_sql" {
-  count = 0 # Disabled - we use VPC connector instead
-  
-  # If you prefer Cloud SQL Proxy sidecar instead of VPC:
-  # 1. Set count = 1
-  # 2. Remove VPC connector from template above
-  # 3. Add this annotation:
-  # metadata {
-  #   annotations = {
-  #     "run.googleapis.com/cloudsql-instances" = google_sql_database_instance.main.connection_name
-  #   }
-  # }
 }
 
 # IAM policy for public access (unauthenticated)
