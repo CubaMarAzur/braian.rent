@@ -1,6 +1,6 @@
 import { defineConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react';
-import path from 'path';
+import { fileURLToPath } from 'url'; // <-- Nowy import
 
 export default defineConfig({
   plugins: [react()],
@@ -18,13 +18,14 @@ export default defineConfig({
         'dist/',
         '**/*.config.{ts,js}',
         '**/*.d.ts',
-        '**/types/',
+        '**/types/**',
       ],
     },
   },
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'),
+      // ✅ POPRAWIONY, NOWOCZESNY SPOSÓB DEFINIOWANIA ALIASÓW
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
 });
