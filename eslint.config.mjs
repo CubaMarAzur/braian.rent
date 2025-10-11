@@ -20,13 +20,6 @@ const eslintConfig = [
       'next-env.d.ts',
     ],
   },
-  {
-    // Allow CommonJS require() in .cts files (CommonJS TypeScript)
-    files: ['**/*.cts'],
-    rules: {
-      '@typescript-eslint/no-require-imports': 'off',
-    },
-  },
 ];
 
 export default eslintConfig;

@@ -1,8 +1,8 @@
-const { defineConfig } = require('vitest/config');
-const react = require('@vitejs/plugin-react');
-const path = require('path');
+import { defineConfig } from 'vitest/config';
+import react from '@vitejs/plugin-react';
+import { fileURLToPath } from 'url';
 
-module.exports = defineConfig({
+export default defineConfig({
   plugins: [react()],
   test: {
     environment: 'jsdom',
@@ -24,8 +24,7 @@ module.exports = defineConfig({
   },
   resolve: {
     alias: {
-      // ✅ COMMONJS-COMPATIBLE PATH ALIASING
-      '@': path.resolve(__dirname, './src'),
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
 });
