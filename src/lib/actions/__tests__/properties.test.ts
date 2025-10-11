@@ -35,7 +35,9 @@ describe('Property Server Actions', () => {
 
   describe('createProperty', () => {
     it('requires authentication', async () => {
-      vi.mocked(auth).mockResolvedValue(null);
+      // Mock auth to return null (no session)
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      vi.mocked(auth).mockResolvedValue(null as any);
 
       const formData = new FormData();
       formData.append('address', 'ul. Testowa 1');
@@ -61,7 +63,8 @@ describe('Property Server Actions', () => {
       expect(typeof deleteProperty).toBe('function');
 
       // Verify it requires authentication
-      vi.mocked(auth).mockResolvedValue(null);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      vi.mocked(auth).mockResolvedValue(null as any);
       const result = await deleteProperty('test-property-id');
 
       expect(result.success).toBe(false);

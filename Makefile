@@ -139,11 +139,25 @@ ci-lint: ## Run CI lint checks
 
 ci-test: ## Run CI tests
 	npm run lint
+	npm run test:run
 	npx tsc --noEmit
-	# npm test (when tests are implemented)
 
 ci-build: ## Build for CI
 	npm run build
+
+ci-check: ## Run all CI checks locally (exactly like GitHub Actions)
+	@echo "$(BLUE)Running CI checks...$(NC)"
+	@echo "$(YELLOW)1/5 Linting...$(NC)"
+	@npm run lint
+	@echo "$(YELLOW)2/5 Format check...$(NC)"
+	@npm run format:check
+	@echo "$(YELLOW)3/5 TypeScript check...$(NC)"
+	@npx tsc --noEmit
+	@echo "$(YELLOW)4/5 Tests...$(NC)"
+	@npm run test:run
+	@echo "$(YELLOW)5/5 Build...$(NC)"
+	@npm run build
+	@echo "$(GREEN)✅ All CI checks passed!$(NC)"
 
 # Logs
 logs-cloudrun: ## View Cloud Run logs
