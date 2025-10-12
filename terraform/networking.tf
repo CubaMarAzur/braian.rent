@@ -24,10 +24,10 @@ resource "google_compute_network" "vpc" {
 }
 
 # Subnet for VPC Access Connector
-# Using 10.9.0.0/28 to avoid conflicts with previous deployments
+# Clean configuration restored for fresh region deployment
 resource "google_compute_subnetwork" "vpc_connector_subnet" {
   name          = "${var.app_name}-vpc-connector-subnet"
-  ip_cidr_range = "10.9.0.0/28"
+  ip_cidr_range = "10.8.0.0/28"
   region        = var.region
   network       = google_compute_network.vpc.id
 

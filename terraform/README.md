@@ -56,7 +56,7 @@ terraform/
 
    ```hcl
    project_id = "your-actual-project-id"
-   region     = "europe-west1"
+   region     = "europe-west3"
    # ... customize other values
    ```
 

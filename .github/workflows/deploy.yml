@@ -8,9 +8,9 @@ on:
 
 env:
   GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
-  GCP_REGION: europe-west1
+  GCP_REGION: europe-west3
   APP_NAME: braian-rent
-  ARTIFACT_REGISTRY: europe-west1-docker.pkg.dev
+  ARTIFACT_REGISTRY: europe-west3-docker.pkg.dev
 
 jobs:
   # Job 1: Lint and Test
