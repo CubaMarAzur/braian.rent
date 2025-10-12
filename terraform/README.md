@@ -166,7 +166,7 @@ After deployment, access:
 - **Cloud Run Logs:**
 
   ```bash
-  gcloud run services logs read braian-rent-service --region europe-west1
+  gcloud run services logs read braian-rent-service --region europe-west3
   ```
 
 - **Cloud SQL Logs:**
@@ -249,7 +249,7 @@ See `variables.tf` for full list. Key variables:
 | Variable                  | Default      | Description               |
 | ------------------------- | ------------ | ------------------------- |
 | `project_id`              | -            | GCP Project ID (required) |
-| `region`                  | europe-west1 | GCP Region                |
+| `region`                  | europe-west3 | GCP Region                |
 | `environment`             | prod         | Environment name          |
 | `db_instance_tier`        | db-f1-micro  | Cloud SQL tier            |
 | `cloud_run_min_instances` | 0            | Min instances             |

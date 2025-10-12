@@ -61,7 +61,7 @@ resource "google_sql_database_instance" "main" {
   deletion_protection = var.environment == "prod" ? true : false
 
   depends_on = [
-    google_service_networking_connection.private_vpc_connection,
+    google_service_networking_connection.private_service_connection,
     google_project_service.required_apis
   ]
 }

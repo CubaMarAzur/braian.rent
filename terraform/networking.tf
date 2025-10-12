@@ -49,23 +49,29 @@ resource "google_vpc_access_connector" "connector" {
   ]
 }
 
-# Global address for Cloud SQL Private IP
-resource "google_compute_global_address" "private_ip_address" {
-  name          = "${var.app_name}-private-ip"
+# Reserved IP range for Cloud SQL Private Service Access
+# Using 10.20.0.0/20 (4096 IPs) - completely separate from VPC Connector
+resource "google_compute_global_address" "private_service_access" {
+  name          = "${var.app_name}-psa-range"
   purpose       = "VPC_PEERING"
   address_type  = "INTERNAL"
-  prefix_length = 16
+  prefix_length = 20
+  address       = "10.20.0.0"
   network       = google_compute_network.vpc.id
 
   depends_on = [google_project_service.required_apis]
 }
 
-# Private VPC connection for Cloud SQL
-resource "google_service_networking_connection" "private_vpc_connection" {
+# Private Service Connection for Cloud SQL
+# This establishes VPC peering with Google's service network
+resource "google_service_networking_connection" "private_service_connection" {
   network                 = google_compute_network.vpc.id
   service                 = "servicenetworking.googleapis.com"
-  reserved_peering_ranges = [google_compute_global_address.private_ip_address.name]
+  reserved_peering_ranges = [google_compute_global_address.private_service_access.name]
 
-  depends_on = [google_project_service.required_apis]
+  depends_on = [
+    google_project_service.required_apis,
+    google_compute_global_address.private_service_access
+  ]
 }
 
