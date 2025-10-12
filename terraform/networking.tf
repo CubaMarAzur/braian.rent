@@ -23,26 +23,21 @@ resource "google_compute_network" "vpc" {
   depends_on = [google_project_service.required_apis]
 }
 
-# Subnet for VPC Connector
-resource "google_compute_subnetwork" "vpc_connector_subnet" {
-  name          = "${var.app_name}-vpc-connector-subnet"
-  ip_cidr_range = "10.8.0.0/28"
-  region        = var.region
-  network       = google_compute_network.vpc.id
-}
-
 # VPC Connector for Cloud Run to Cloud SQL private IP
 resource "google_vpc_access_connector" "connector" {
   count = var.enable_vpc_connector ? 1 : 0
 
-  name          = "${var.app_name}-vpc-connector"
-  region        = var.region
-  network       = google_compute_network.vpc.name
-  ip_cidr_range = "10.8.0.0/28"
+  name    = "${var.app_name}-vpc-connector"
+  region  = var.region
+  network = google_compute_network.vpc.name
+
+  # Best Practice: Let Google Cloud automatically allocate a free IP range
+  # This prevents conflicts with existing subnets from previous failed deployments
+  # Google will automatically find and assign an available /28 CIDR block
+  # No ip_cidr_range or subnet needed - GCP handles this automatically
 
   depends_on = [
-    google_project_service.required_apis,
-    google_compute_subnetwork.vpc_connector_subnet
+    google_project_service.required_apis
   ]
 }
 
