@@ -16,9 +16,7 @@ export default async function middleware(request: NextRequest) {
   // Auth check for protected routes
   const session = await auth();
   const isAuthPage = request.nextUrl.pathname.startsWith('/auth');
-  const isProtectedRoute =
-    request.nextUrl.pathname === '/' ||
-    request.nextUrl.pathname.startsWith('/api/v1');
+  const isProtectedRoute = request.nextUrl.pathname.startsWith('/api/v1');
 
   // Redirect to login if accessing protected route without session
   if (isProtectedRoute && !session) {
