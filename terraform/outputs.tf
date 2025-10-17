@@ -72,7 +72,7 @@ output "project_info" {
 # Important URLs for setup
 output "setup_instructions" {
   description = "Post-deployment setup instructions"
-  value = <<-EOT
+  value       = <<-EOT
   
   🎉 Infrastructure deployed successfully!
   

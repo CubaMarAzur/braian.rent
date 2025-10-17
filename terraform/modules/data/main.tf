@@ -33,11 +33,11 @@ resource "google_sql_database_instance" "main" {
     }
 
     ip_configuration {
-      ipv4_enabled    = true
-      require_ssl     = true
+      ipv4_enabled = true
+      require_ssl  = true
       authorized_networks {
         name  = "cloud-run"
-        value = "0.0.0.0/0"  # Cloud Run will use Cloud SQL Auth Proxy
+        value = "0.0.0.0/0" # Cloud Run will use Cloud SQL Auth Proxy
       }
     }
 

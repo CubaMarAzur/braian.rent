@@ -68,17 +68,17 @@ resource "google_artifact_registry_repository" "docker_repo" {
 module "data" {
   source = "./modules/data"
 
-  project_id         = var.project_id
-  region             = var.region
-  app_name           = var.app_name
-  environment        = var.environment
-  vpc_id             = module.networking.vpc_id
-  psa_connection_id  = module.networking.psa_connection_id
-  db_instance_tier   = var.db_instance_tier
-  db_disk_size       = var.db_disk_size
-  db_name            = var.db_name
-  db_user            = var.db_user
-  max_connections    = var.max_connections
+  project_id        = var.project_id
+  region            = var.region
+  app_name          = var.app_name
+  environment       = var.environment
+  vpc_id            = module.networking.vpc_id
+  psa_connection_id = module.networking.psa_connection_id
+  db_instance_tier  = var.db_instance_tier
+  db_disk_size      = var.db_disk_size
+  db_name           = var.db_name
+  db_user           = var.db_user
+  max_connections   = var.max_connections
 
   depends_on = [
     module.networking,
@@ -91,20 +91,20 @@ module "data" {
 module "app" {
   source = "./modules/app"
 
-  project_id        = var.project_id
-  region            = var.region
-  app_name          = var.app_name
-  environment       = var.environment
-  image_tag         = var.image_tag
-  vpc_connector_id  = module.networking.vpc_connector_id
-  database_url      = module.data.database_url
-  nextauth_url      = var.nextauth_url
-  cpu               = var.cloud_run_cpu
-  memory            = var.cloud_run_memory
-  min_instances     = var.cloud_run_min_instances
-  max_instances     = var.cloud_run_max_instances
-  timeout           = var.cloud_run_timeout
-  log_level         = var.log_level
+  project_id       = var.project_id
+  region           = var.region
+  app_name         = var.app_name
+  environment      = var.environment
+  image_tag        = var.image_tag
+  vpc_connector_id = module.networking.vpc_connector_id
+  database_url     = module.data.database_url
+  nextauth_url     = var.nextauth_url
+  cpu              = var.cloud_run_cpu
+  memory           = var.cloud_run_memory
+  min_instances    = var.cloud_run_min_instances
+  max_instances    = var.cloud_run_max_instances
+  timeout          = var.cloud_run_timeout
+  log_level        = var.log_level
 
   depends_on = [
     module.data,

@@ -60,10 +60,34 @@ export default function DashboardClient({
             <h3 className="text-lg font-semibold text-gray-900 mb-2">
               Brak nieruchomości
             </h3>
-            <p className="text-gray-600">
+            <p className="text-gray-600 mb-6">
               Nie masz jeszcze żadnych nieruchomości. Dodaj pierwszą, aby
               rozpocząć.
             </p>
+            <button
+              onClick={() => {
+                // TODO: Implement add property functionality
+                alert(
+                  'Funkcjonalność dodawania nieruchomości będzie dostępna wkrótce!'
+                );
+              }}
+              className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              <svg
+                className="w-5 h-5 mr-2"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2}
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M12 4v16m8-8H4"
+                />
+              </svg>
+              Dodaj nieruchomość
+            </button>
           </div>
         </div>
       </div>
@@ -79,7 +103,33 @@ export default function DashboardClient({
         <div className="text-sm text-gray-600">
           Zalogowany jako: <span className="font-medium">{user.name}</span>
         </div>
-        <LogoutButton />
+        <div className="flex items-center space-x-4">
+          <button
+            onClick={() => {
+              // TODO: Implement add property functionality
+              alert(
+                'Funkcjonalność dodawania nieruchomości będzie dostępna wkrótce!'
+              );
+            }}
+            className="inline-flex items-center px-3 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition-colors"
+          >
+            <svg
+              className="w-4 h-4 mr-1"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={2}
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M12 4v16m8-8H4"
+              />
+            </svg>
+            Dodaj nieruchomość
+          </button>
+          <LogoutButton />
+        </div>
       </div>
 
       {/* Property selector */}

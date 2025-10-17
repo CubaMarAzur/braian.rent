@@ -287,7 +287,7 @@ resource "google_cloud_run_v2_job" "db_migrate" {
         resources {
           limits = {
             cpu    = "1"
-            memory = "2Gi"  # Increased for Prisma migrations
+            memory = "2Gi" # Increased for Prisma migrations
           }
         }
 
