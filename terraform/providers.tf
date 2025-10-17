@@ -18,7 +18,7 @@ terraform {
 
   # Backend configuration for storing Terraform state
   backend "gcs" {
-    bucket = "braian-rent-terraform-state-prod-2"
+    bucket = "braian-rent-tfstate"
     prefix = "terraform/state"
   }
 }

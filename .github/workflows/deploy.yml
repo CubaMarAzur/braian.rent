@@ -225,7 +225,7 @@ jobs:
           echo "Image pushed successfully!"
           echo "Tags: ${{ steps.meta.outputs.tags }}"
           echo "Digest: ${{ steps.build.outputs.digest }}"
-      
+
       - name: Export image SHA tag
         id: image
         run: |
