@@ -60,11 +60,11 @@ jobs:
           format: sarif
           additional_args: --minimum-severity HIGH
 
-      - name: Upload tfsec results to GitHub Security
-        uses: github/codeql-action/upload-sarif@v3
-        if: always()
-        with:
-          sarif_file: results.sarif
+      # - name: Upload tfsec results to GitHub Security
+      #   uses: github/codeql-action/upload-sarif@v3
+      #   if: always()
+      #   with:
+      #     sarif_file: results.sarif
 
   # Job 3: Container Security Scan (Trivy)
   container-scan:
@@ -89,11 +89,11 @@ jobs:
           severity: 'HIGH,CRITICAL'
           exit-code: '1'
 
-      - name: Upload Trivy results to GitHub Security
-        uses: github/codeql-action/upload-sarif@v3
-        if: always()
-        with:
-          sarif_file: trivy-results.sarif
+      # - name: Upload Trivy results to GitHub Security
+      #   uses: github/codeql-action/upload-sarif@v3
+      #   if: always()
+      #   with:
+      #     sarif_file: trivy-results.sarif
 
   # Job 4: Terraform Plan & Apply (creates Artifact Registry)
   terraform:
