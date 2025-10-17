@@ -17,11 +17,10 @@ terraform {
   }
 
   # Backend configuration for storing Terraform state
-  # Uncomment and configure for production use
-  # backend "gcs" {
-  #   bucket = "your-terraform-state-bucket"
-  #   prefix = "terraform/state"
-  # }
+  backend "gcs" {
+    bucket = "braian-rent-terraform-state-prod-2"
+    prefix = "terraform/state"
+  }
 }
 
 provider "google" {

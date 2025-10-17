@@ -1,26 +1,30 @@
+# Data Module - Cloud SQL PostgreSQL Database
+# Manages database instance, databases, users, and connection strings
+
 # Random password for database user
 resource "random_password" "db_password" {
   length  = 32
   special = true
 }
 
-# Cloud SQL Instance (PostgreSQL)
+# Cloud SQL Instance
 resource "google_sql_database_instance" "main" {
   name             = "${var.app_name}-db-${var.environment}"
   database_version = "POSTGRES_15"
   region           = var.region
+  project          = var.project_id
 
   settings {
     tier              = var.db_instance_tier
-    availability_type = var.environment == "prod" ? "REGIONAL" : "ZONAL"
+    availability_type = var.environment == "production" ? "REGIONAL" : "ZONAL"
     disk_type         = "PD_SSD"
-    disk_size         = 10
+    disk_size         = var.db_disk_size
     disk_autoresize   = true
 
     backup_configuration {
       enabled                        = true
       start_time                     = "03:00"
-      point_in_time_recovery_enabled = true
+      point_in_time_recovery_enabled = var.environment == "production"
       transaction_log_retention_days = 7
       backup_retention_settings {
         retained_backups = 7
@@ -29,9 +33,12 @@ resource "google_sql_database_instance" "main" {
     }
 
     ip_configuration {
-      ipv4_enabled                                  = false
-      private_network                               = google_compute_network.vpc.id
-      enable_private_path_for_google_cloud_services = true
+      ipv4_enabled    = true
+      require_ssl     = true
+      authorized_networks {
+        name  = "cloud-run"
+        value = "0.0.0.0/0"  # Cloud Run will use Cloud SQL Auth Proxy
+      }
     }
 
     insights_config {
@@ -43,7 +50,7 @@ resource "google_sql_database_instance" "main" {
 
     database_flags {
       name  = "max_connections"
-      value = "100"
+      value = var.max_connections
     }
 
     database_flags {
@@ -58,18 +65,17 @@ resource "google_sql_database_instance" "main" {
     }
   }
 
-  deletion_protection = var.environment == "prod" ? true : false
+  deletion_protection = var.environment == "production"
 
-  depends_on = [
-    google_service_networking_connection.private_service_connection,
-    google_project_service.required_apis
-  ]
+  # Critical: Wait for PSA connection before creating instance
+  depends_on = [var.psa_connection_id]
 }
 
 # Database
 resource "google_sql_database" "database" {
   name     = var.db_name
   instance = google_sql_database_instance.main.name
+  project  = var.project_id
 }
 
 # Database User
@@ -77,38 +83,12 @@ resource "google_sql_user" "user" {
   name     = var.db_user
   instance = google_sql_database_instance.main.name
   password = random_password.db_password.result
+  project  = var.project_id
 }
 
-# Store database password in Secret Manager
-resource "google_secret_manager_secret" "db_password" {
-  secret_id = "${var.app_name}-db-password"
-
-  replication {
-    auto {}
-  }
-
-  depends_on = [google_project_service.required_apis]
-}
-
-resource "google_secret_manager_secret_version" "db_password" {
-  secret      = google_secret_manager_secret.db_password.id
-  secret_data = random_password.db_password.result
-}
-
-# Construct DATABASE_URL and store in Secret Manager
-resource "google_secret_manager_secret" "database_url" {
-  secret_id = "${var.app_name}-database-url"
-
-  replication {
-    auto {}
-  }
-
-  depends_on = [google_project_service.required_apis]
-}
-
-resource "google_secret_manager_secret_version" "database_url" {
-  secret = google_secret_manager_secret.database_url.id
-  secret_data = format(
+# Construct DATABASE_URL for Prisma (public IP with Cloud SQL Auth Proxy)
+locals {
+  database_url = format(
     "postgresql://%s:%s@/%s?host=/cloudsql/%s:%s:%s",
     google_sql_user.user.name,
     random_password.db_password.result,
