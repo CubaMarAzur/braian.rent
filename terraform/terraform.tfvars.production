@@ -1,0 +1,35 @@
+# Production Environment Configuration
+
+# GCP Configuration
+project_id  = "braian-rent-prod-2" # Change to your production project
+region      = "europe-west3"
+environment = "production"
+
+# Application
+app_name  = "braian-rent"
+image_tag = "europe-west3-docker.pkg.dev/braian-rent-prod-2/braian-rent-images/braian-rent:main-04e9f7d"
+
+# Networking
+enable_vpc_connector = false
+vpc_connector_cidr   = "10.250.0.0/28"
+psa_address          = "10.22.0.0"
+psa_prefix_length    = 20
+
+# Database - Production-grade resources
+db_instance_tier = "db-custom-2-4096" # 2 vCPU, 4GB RAM
+db_disk_size     = 50
+db_name          = "braian_prod"
+db_user          = "braian_app"
+max_connections  = "200"
+
+# Cloud Run - Production scaling
+cloud_run_cpu           = "2"
+cloud_run_memory        = "1Gi"
+cloud_run_min_instances = 1 # Always warm
+cloud_run_max_instances = 100
+cloud_run_timeout       = 300
+
+# Application
+nextauth_url = "https://app.braian.rent" # Update with actual domain
+log_level    = "info"
+

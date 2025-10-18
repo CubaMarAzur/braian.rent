@@ -171,7 +171,7 @@ jobs:
       - name: Terraform Plan
         run: |
           terraform plan -input=false -lock-timeout=2m \
-            -var-file="environments/production/terraform.tfvars" \
+            -var-file="terraform.tfvars.production" \
             -out=tfplan
 
       - name: Terraform Apply
