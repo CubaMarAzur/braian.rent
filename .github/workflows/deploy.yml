@@ -309,9 +309,12 @@ jobs:
 
       - name: Deploy to Cloud Run
         run: |
+          # Use the first tag from the metadata action
+          IMAGE_TAG=$(echo "${{ needs.build-and-push.outputs.image_tag }}" | head -1)
+          echo "Using image tag: $IMAGE_TAG"
           gcloud run services update ${{ env.APP_NAME }}-service \
             --region ${{ env.GCP_REGION }} \
-            --image ${{ needs.build-and-push.outputs.image }} \
+            --image "$IMAGE_TAG" \
             --platform managed
 
       - name: Get Cloud Run URL
