@@ -101,6 +101,15 @@ jobs:
             --cache-from type=gha \
             --cache-to type=gha,mode=max
 
+      - name: Install Trivy
+        run: |
+          sudo apt-get update
+          sudo apt-get install wget apt-transport-https gnupg lsb-release
+          wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | sudo apt-key add -
+          echo "deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main" | sudo tee -a /etc/apt/sources.list.d/trivy.list
+          sudo apt-get update
+          sudo apt-get install trivy
+
       - name: Run Trivy vulnerability scanner
         continue-on-error: true
         run: |
@@ -300,7 +309,7 @@ jobs:
         run: |
           gcloud run services update ${{ env.APP_NAME }}-service \
             --region ${{ env.GCP_REGION }} \
-            --image ${{ needs.build-and-push.outputs.image }} \
+            --image ${{ needs.build-and-push.outputs.image_tag }} \
             --platform managed
 
       - name: Get Cloud Run URL

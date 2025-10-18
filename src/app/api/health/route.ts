@@ -3,6 +3,7 @@ import { PrismaClient } from '@prisma/client';
 import { config, validateConfig } from '@/lib/config';
 import { appLogger } from '@/lib/logger';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const prisma = new PrismaClient();
 
 export async function GET() {
