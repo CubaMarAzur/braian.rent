@@ -173,7 +173,7 @@ jobs:
           terraform plan -input=false -lock-timeout=2m \
             -var="project_id=${{ env.GCP_PROJECT_ID }}" \
             -var="region=${{ env.GCP_REGION }}" \
-            -var="environment=prod" \
+            -var="environment=production" \
             -out=tfplan
 
       - name: Terraform Apply
