@@ -162,7 +162,7 @@ jobs:
       - name: Terraform Init
         run: |
           terraform init -input=false \
-            -backend-config="bucket=${{ secrets.TF_STATE_BUCKET }}" \
+            -backend-config="bucket=braian-rent-terraform-state" \
             -backend-config="prefix=terraform/state"
 
       - name: Terraform Validate
