@@ -278,6 +278,8 @@ jobs:
           echo "sha_tag=${SHA_TAG}" >> $GITHUB_OUTPUT
           echo "full_image=${FULL_IMAGE}" >> $GITHUB_OUTPUT
           echo "Using immutable image tag: ${FULL_IMAGE}"
+          echo "Debug - SHA_TAG: '${SHA_TAG}'"
+          echo "Debug - FULL_IMAGE: '${FULL_IMAGE}'"
 
   # Job 4: Deploy to Cloud Run
   deploy:
@@ -309,7 +311,7 @@ jobs:
         run: |
           gcloud run services update ${{ env.APP_NAME }}-service \
             --region ${{ env.GCP_REGION }} \
-            --image ${{ needs.build-and-push.outputs.image_tag }} \
+            --image ${{ needs.build-and-push.outputs.image }} \
             --platform managed
 
       - name: Get Cloud Run URL
