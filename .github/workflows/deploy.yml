@@ -426,3 +426,142 @@ jobs:
           echo "📍 Application URL: ${{ steps.get-url.outputs.url }}"
           echo "🔐 Login: ${{ steps.get-url.outputs.url }}/auth/login"
           echo "📊 Health: ${{ steps.get-url.outputs.url }}/api/health"
+
+  # Error Reporting Job - runs on any failure
+  error-reporting:
+    name: Report Pipeline Failure
+    runs-on: ubuntu-latest
+    needs: [lint-and-test, container-scan, terraform, build-and-push, deploy]
+    if: failure()
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Get failed job details
+        id: failed-job
+        run: |
+          # Determine which job failed
+          FAILED_JOBS=""
+          if [ "${{ needs.lint-and-test.result }}" == "failure" ]; then
+            FAILED_JOBS="$FAILED_JOBS lint-and-test"
+          fi
+          if [ "${{ needs.container-scan.result }}" == "failure" ]; then
+            FAILED_JOBS="$FAILED_JOBS container-scan"
+          fi
+          if [ "${{ needs.terraform.result }}" == "failure" ]; then
+            FAILED_JOBS="$FAILED_JOBS terraform"
+          fi
+          if [ "${{ needs.build-and-push.result }}" == "failure" ]; then
+            FAILED_JOBS="$FAILED_JOBS build-and-push"
+          fi
+          if [ "${{ needs.deploy.result }}" == "failure" ]; then
+            FAILED_JOBS="$FAILED_JOBS deploy"
+          fi
+          
+          echo "failed_jobs=$FAILED_JOBS" >> $GITHUB_OUTPUT
+          echo "Failed jobs: $FAILED_JOBS"
+
+      - name: Get error logs
+        id: error-logs
+        run: |
+          # Create a summary of the failure
+          ERROR_SUMMARY="Pipeline failed in the following jobs: ${{ steps.failed-job.outputs.failed_jobs }}"
+          ERROR_SUMMARY="$ERROR_SUMMARY\n\nRun URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          ERROR_SUMMARY="$ERROR_SUMMARY\nCommit: ${{ github.sha }}"
+          ERROR_SUMMARY="$ERROR_SUMMARY\nBranch: ${{ github.ref }}"
+          ERROR_SUMMARY="$ERROR_SUMMARY\nTriggered by: ${{ github.actor }}"
+          
+          echo "error_summary<<EOF" >> $GITHUB_OUTPUT
+          echo -e "$ERROR_SUMMARY" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Create error issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const failedJobs = '${{ steps.failed-job.outputs.failed_jobs }}';
+            const errorSummary = `${{ steps.error-logs.outputs.error_summary }}`;
+            
+            // Create issue title
+            const shortSha = context.sha.substring(0, 7);
+            const issueTitle = `🚨 Pipeline Failed: ${failedJobs} (${shortSha})`;
+            
+            // Create issue body
+            const issueBody = `## 🚨 Pipeline Failure Report
+
+### 📋 Basic Information
+- **Repository**: ${context.repo.owner}/${context.repo.repo}
+- **Commit**: \`${context.sha}\`
+- **Branch**: \`${context.ref}\`
+- **Workflow**: ${context.workflow}
+- **Run ID**: ${context.runId}
+- **Triggered by**: ${context.actor}
+- **Failed Jobs**: \`${failedJobs}\`
+
+### 🔗 Links
+- **GitHub Actions Run**: [View Run #${context.runId}](https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId})
+- **Commit**: [${shortSha}](https://github.com/${context.repo.owner}/${context.repo.repo}/commit/${context.sha})
+
+### ❌ Error Summary
+\`\`\`
+${errorSummary}
+\`\`\`
+
+### 🏷️ Labels
+- \`bug\`
+- \`pipeline-failure\`
+- \`needs-investigation\`
+
+### 📝 Notes
+- [ ] Error analyzed
+- [ ] Root cause identified  
+- [ ] Fix implemented
+- [ ] Pipeline passing
+
+---
+*This issue was automatically created by GitHub Actions on pipeline failure.*`;
+
+            // Create the issue
+            const issue = await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: issueTitle,
+              body: issueBody,
+              labels: ['bug', 'pipeline-failure', 'needs-investigation']
+            });
+            
+            console.log(`✅ Created issue #${issue.data.number}: ${issueTitle}`);
+            console.log(`🔗 Issue URL: ${issue.data.html_url}`);
+
+      - name: Update error log file
+        run: |
+          # Update docs/pipeline-errors.md with the new error
+          TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          
+          ERROR_ENTRY="
+## $TIMESTAMP
+
+**Commit**: \`${{ github.sha }}\`  
+**Failed Jobs**: \`${{ steps.failed-job.outputs.failed_jobs }}\`  
+**Run ID**: [${{ github.run_id }}](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})  
+**Issue**: [TBD - will be updated after issue creation](https://github.com/${{ github.repository }}/issues)
+
+### Error Summary
+\`\`\`
+${{ steps.error-logs.outputs.error_summary }}
+\`\`\`
+
+---"
+          
+          # Insert the error entry at the top of the file (after the header)
+          sed -i "/^## Historia błędów$/a\\$ERROR_ENTRY" docs/pipeline-errors.md
+          
+          echo "✅ Updated docs/pipeline-errors.md with error details"
