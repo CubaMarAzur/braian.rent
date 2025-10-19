@@ -15,6 +15,10 @@ export const CardHeader = (p: React.HTMLAttributes<HTMLDivElement>) => (
 export const CardContent = (p: React.HTMLAttributes<HTMLDivElement>) => (
   <div className="p-6 pt-0" {...p} />
 );
-export const CardTitle = ({ children }: { children: React.ReactNode }) => (
-  <h2 className="text-lg font-semibold">{children}</h2>
-);
+export const CardTitle = ({
+  children,
+  className = '',
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) => <h2 className={`text-lg font-semibold ${className}`}>{children}</h2>;
