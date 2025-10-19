@@ -107,8 +107,25 @@ function getDocumentStatusIcon(
 
 export default function DocumentsCard({ documents }: DocumentsCardProps) {
   return (
-    <div className="bg-white rounded-2xl shadow p-6 flex flex-col">
-      <h2 className="text-gray-700 font-semibold text-lg mb-4">Dokumenty</h2>
+    <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 flex flex-col h-full">
+      <div className="flex items-center mb-6">
+        <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center mr-3">
+          <svg
+            className="w-5 h-5 text-purple-600"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={2}
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+            />
+          </svg>
+        </div>
+        <h2 className="text-gray-800 font-bold text-xl">Dokumenty</h2>
+      </div>
       {documents.length > 0 ? (
         <ul className="space-y-3">
           {documents.map(doc => (

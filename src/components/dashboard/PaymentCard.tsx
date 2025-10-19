@@ -94,10 +94,25 @@ function getPaymentStatusBadge(status: PaymentStatus) {
 
 export default function PaymentCard({ payment }: PaymentCardProps) {
   return (
-    <div className="bg-white rounded-2xl shadow p-6 flex flex-col">
-      <h2 className="text-gray-700 font-semibold text-lg mb-4">
-        Bieżące Płatności
-      </h2>
+    <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 flex flex-col h-full">
+      <div className="flex items-center mb-6">
+        <div className="w-8 h-8 bg-yellow-100 rounded-lg flex items-center justify-center mr-3">
+          <svg
+            className="w-5 h-5 text-yellow-600"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={2}
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"
+            />
+          </svg>
+        </div>
+        <h2 className="text-gray-800 font-bold text-xl">Bieżące Płatności</h2>
+      </div>
       {payment ? (
         <>
           <div className="flex items-center justify-between mb-2">

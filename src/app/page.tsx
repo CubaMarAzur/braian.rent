@@ -1,34 +1,17 @@
-import { auth } from '@/lib/auth';
-import { redirect } from 'next/navigation';
-import { getPropertiesByOwner } from '@/lib/data/properties';
-import DashboardClient from '@/components/views/DashboardClient';
+import Hero from '@/components/landing/Hero';
+import Benefits from '@/components/landing/Benefits';
+import DashboardPreview from '@/components/landing/DashboardPreview';
 
-/**
- * Dashboard Page - Server Component
- *
- * Fetches data on the server and passes it to client components.
- * This improves performance (faster LCP) and SEO.
- */
-export default async function DashboardPage() {
-  // Server-side authentication check
-  const session = await auth();
-
-  if (!session?.user?.id) {
-    redirect('/auth/login');
-  }
-
-  // Fetch properties on the server (RSC)
-  const properties = await getPropertiesByOwner(session.user.id);
-
-  // Pass data as props to client component
+export default function LandingPage() {
   return (
-    <DashboardClient
-      properties={properties}
-      user={{
-        id: session.user.id,
-        name: session.user.name || '',
-        email: session.user.email || '',
-      }}
-    />
+    <main className="min-h-screen bg-gradient-to-b from-white to-sky-50">
+      <Hero />
+      <section className="mx-auto mt-10 w-full max-w-6xl px-4">
+        <Benefits />
+      </section>
+      <section className="mx-auto mt-16 w-full max-w-6xl px-4 pb-24">
+        <DashboardPreview />
+      </section>
+    </main>
   );
 }

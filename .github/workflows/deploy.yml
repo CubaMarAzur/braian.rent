@@ -316,7 +316,7 @@ jobs:
           # Use simple deploy tag
           DEPLOY_TAG="${{ env.ARTIFACT_REGISTRY }}/${{ env.GCP_PROJECT_ID }}/${{ env.APP_NAME }}-images/${{ env.APP_NAME }}:deploy-${{ github.sha }}"
           echo "Using deploy tag: $DEPLOY_TAG"
-          
+
           gcloud run services update ${{ env.APP_NAME }}-service \
             --region ${{ env.GCP_REGION }} \
             --image "$DEPLOY_TAG" \

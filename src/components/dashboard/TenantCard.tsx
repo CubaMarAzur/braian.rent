@@ -24,8 +24,25 @@ function getInitials(name: string): string {
 
 export default function TenantCard({ tenant }: TenantCardProps) {
   return (
-    <div className="bg-white rounded-2xl shadow p-6 flex flex-col">
-      <h2 className="text-gray-700 font-semibold text-lg mb-4">Najemca</h2>
+    <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 flex flex-col h-full">
+      <div className="flex items-center mb-6">
+        <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center mr-3">
+          <svg
+            className="w-5 h-5 text-green-600"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={2}
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+            />
+          </svg>
+        </div>
+        <h2 className="text-gray-800 font-bold text-xl">Najemca</h2>
+      </div>
       {tenant ? (
         <div className="flex items-center">
           <div className="w-14 h-14 rounded-full bg-blue-100 flex items-center justify-center text-2xl font-bold text-blue-700 mr-4">
