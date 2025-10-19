@@ -268,6 +268,8 @@ jobs:
           echo "Image pushed successfully!"
           echo "Tags: ${{ steps.meta.outputs.tags }}"
           echo "Digest: ${{ steps.build.outputs.digest }}"
+          echo "Debug - meta.outputs.tags: '${{ steps.meta.outputs.tags }}'"
+          echo "Debug - meta.outputs.json: '${{ steps.meta.outputs.json }}'"
 
       - name: Export image SHA tag
         id: image
@@ -309,9 +311,20 @@ jobs:
 
       - name: Deploy to Cloud Run
         run: |
+          # Debug outputs
+          echo "Debug - build-and-push.outputs.image_tag: '${{ needs.build-and-push.outputs.image_tag }}'"
+          echo "Debug - build-and-push.outputs.image: '${{ needs.build-and-push.outputs.image }}'"
+          echo "Debug - build-and-push.outputs.image_digest: '${{ needs.build-and-push.outputs.image_digest }}'"
+          
           # Use the first tag from the metadata action
           IMAGE_TAG=$(echo "${{ needs.build-and-push.outputs.image_tag }}" | head -1)
-          echo "Using image tag: $IMAGE_TAG"
+          echo "Using image tag: '$IMAGE_TAG'"
+          
+          if [ -z "$IMAGE_TAG" ]; then
+            echo "ERROR: IMAGE_TAG is empty!"
+            exit 1
+          fi
+          
           gcloud run services update ${{ env.APP_NAME }}-service \
             --region ${{ env.GCP_REGION }} \
             --image "$IMAGE_TAG" \
