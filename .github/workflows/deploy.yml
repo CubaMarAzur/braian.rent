@@ -255,7 +255,9 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: |
+            ${{ steps.meta.outputs.tags }}
+            ${{ env.ARTIFACT_REGISTRY }}/${{ env.GCP_PROJECT_ID }}/${{ env.APP_NAME }}-images/${{ env.APP_NAME }}:deploy-${{ github.sha }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -311,23 +313,13 @@ jobs:
 
       - name: Deploy to Cloud Run
         run: |
-          # Debug outputs
-          echo "Debug - build-and-push.outputs.image_tag: '${{ needs.build-and-push.outputs.image_tag }}'"
-          echo "Debug - build-and-push.outputs.image: '${{ needs.build-and-push.outputs.image }}'"
-          echo "Debug - build-and-push.outputs.image_digest: '${{ needs.build-and-push.outputs.image_digest }}'"
-          
-          # Use the first tag from the metadata action
-          IMAGE_TAG=$(echo "${{ needs.build-and-push.outputs.image_tag }}" | head -1)
-          echo "Using image tag: '$IMAGE_TAG'"
-          
-          if [ -z "$IMAGE_TAG" ]; then
-            echo "ERROR: IMAGE_TAG is empty!"
-            exit 1
-          fi
+          # Use simple deploy tag
+          DEPLOY_TAG="${{ env.ARTIFACT_REGISTRY }}/${{ env.GCP_PROJECT_ID }}/${{ env.APP_NAME }}-images/${{ env.APP_NAME }}:deploy-${{ github.sha }}"
+          echo "Using deploy tag: $DEPLOY_TAG"
           
           gcloud run services update ${{ env.APP_NAME }}-service \
             --region ${{ env.GCP_REGION }} \
-            --image "$IMAGE_TAG" \
+            --image "$DEPLOY_TAG" \
             --platform managed
 
       - name: Get Cloud Run URL
