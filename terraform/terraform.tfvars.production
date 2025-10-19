@@ -7,7 +7,7 @@ environment = "production"
 
 # Application
 app_name  = "braian-rent"
-image_tag = "europe-west3-docker.pkg.dev/braian-rent-prod-2/braian-rent-images/braian-rent:main-04e9f7d"
+image_tag = "europe-west3-docker.pkg.dev/braian-rent-prod-2/braian-rent-images/braian-rent:deploy-3de1753"
 
 # Networking
 enable_vpc_connector = false
